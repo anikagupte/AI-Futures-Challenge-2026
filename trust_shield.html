@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lyra — AI Work Pulse</title>
+<style>
+  :root {
+    --primary: #4F7FC2;
+    --secondary: #7CA0D2;
+    --light: #AAC1E2;
+    --lighter: #D8E2F2;
+    --white: #FFFFFF;
+    --text-dark: #1c2a3a;
+    --text-mid: #45556e;
+    --text-muted: #7a90aa;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: var(--lighter);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-dark);
+    position: relative;
+    overflow: hidden;
+  }
+
+  body::before, body::after {
+    content: "";
+    position: fixed;
+    border-radius: 50%;
+    opacity: 0.18;
+    pointer-events: none;
+  }
+  body::before {
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, var(--secondary), transparent 70%);
+    top: -200px; right: -150px;
+  }
+  body::after {
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, var(--primary), transparent 70%);
+    bottom: -150px; left: -100px;
+  }
+
+  .container {
+    background: var(--white);
+    width: 95%;
+    max-width: 540px;
+    padding: 64px 52px 56px;
+    border-radius: 24px;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.8) inset, 0 12px 40px rgba(79,127,194,0.1), 0 2px 8px rgba(0,0,0,0.04);
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .logo-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px; height: 52px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    border-radius: 14px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(79,127,194,0.3);
+  }
+  .logo-mark svg { width: 26px; height: 26px; fill: none; stroke: white; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+  .wordmark {
+    font-size: 1rem; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--text-muted);
+    margin-bottom: 32px; display: block;
+  }
+
+  h1 { font-size: 2.1rem; font-weight: 700; letter-spacing: -0.03em; color: var(--text-dark); line-height: 1.2; margin-bottom: 14px; }
+  h1 span { color: var(--primary); }
+
+  .description {
+    font-size: 1.05rem; color: var(--text-mid); line-height: 1.65;
+    margin-bottom: 40px; max-width: 340px; margin-left: auto; margin-right: auto;
+  }
+
+  .stats-row { display: flex; justify-content: center; gap: 8px; margin-bottom: 36px; flex-wrap: wrap; }
+  .stat-pill {
+    display: flex; align-items: center; gap: 6px;
+    background: #f0f5fb; border: 1px solid #dde8f5;
+    border-radius: 100px; padding: 6px 14px;
+    font-size: 0.82rem; font-weight: 500; color: var(--text-mid);
+  }
+  .stat-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--primary); flex-shrink: 0; }
+
+  .cta-btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: linear-gradient(135deg, var(--primary) 0%, #3d6db5 100%);
+    color: white; border: none;
+    padding: 17px 44px; border-radius: 14px;
+    font-size: 1rem; font-weight: 600; cursor: pointer; letter-spacing: 0.01em;
+    box-shadow: 0 4px 14px rgba(79,127,194,0.4), 0 1px 3px rgba(0,0,0,0.08);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    width: 100%; max-width: 300px; justify-content: center;
+  }
+  .cta-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 22px rgba(79,127,194,0.45), 0 2px 6px rgba(0,0,0,0.08); }
+  .cta-btn:active { transform: translateY(0); }
+  .cta-btn svg { width: 17px; height: 17px; stroke: white; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; fill: none; transition: transform 0.18s ease; }
+  .cta-btn:hover svg { transform: translateX(3px); }
+
+  .divider { width: 36px; height: 2px; background: var(--lighter); border-radius: 2px; margin: 32px auto; }
+
+  .trust-row { display: flex; justify-content: center; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .trust-item { display: flex; align-items: center; gap: 5px; font-size: 0.78rem; color: var(--text-muted); font-weight: 500; }
+  .trust-item svg { width: 13px; height: 13px; stroke: var(--light); stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+  .trust-sep { width: 3px; height: 3px; background: var(--lighter); border-radius: 50%; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="logo-mark">
+    <svg viewBox="0 0 24 24"><polyline points="2 12 6 12 8 5 10 19 12 8 14 15 16 12 22 12"/></svg>
+  </div>
+  <span class="wordmark">Lyra</span>
+  <h1>How's work <span>actually</span> going?</h1>
+  <p class="description">A quick 2-minute check-in — so your team can surface what matters, without the noise.</p>
+  <div class="stats-row">
+    <div class="stat-pill"><div class="dot"></div> 2 minutes</div>
+    <div class="stat-pill"><div class="dot"></div> 8 questions</div>
+    <div class="stat-pill"><div class="dot"></div> Always anonymous</div>
+  </div>
+  <button class="cta-btn" onclick="beginSurvey()">
+    Start check-in
+    <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+  </button>
+  <div class="divider"></div>
+  <div class="trust-row">
+    <div class="trust-item">
+      <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      Encrypted responses
+    </div>
+    <div class="trust-sep"></div>
+    <div class="trust-item">
+      <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      No personal data stored
+    </div>
+    <div class="trust-sep"></div>
+    <div class="trust-item">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      GDPR compliant
+    </div>
+  </div>
+</div>
+<script>
+  function beginSurvey() { alert("Survey starting..."); }
+</script>
+</body>
+</html>
