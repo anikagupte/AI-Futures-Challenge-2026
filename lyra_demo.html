@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lyra Trust Shield — Interactive Demo</title>
+<style>
+  :root {
+    --primary: #4F7FC2;
+    --secondary: #7CA0D2;
+    --light: #AAC1E2;
+    --lighter: #D8E2F2;
+    --white: #FFFFFF;
+    --text-dark: #1c2a3a;
+    --text-mid: #45556e;
+    --text-muted: #7a90aa;
+    --success: #22c55e;
+    --warning: #f59e0b;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: linear-gradient(135deg, var(--lighter) 0%, #e8f0fa 100%);
+    color: var(--text-dark);
+    line-height: 1.6;
+  }
+
+  /* Hero Section */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 80px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before, .hero::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.15;
+    pointer-events: none;
+  }
+  .hero::before {
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, var(--secondary), transparent 70%);
+    top: -250px; right: -200px;
+  }
+  .hero::after {
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, var(--primary), transparent 70%);
+    bottom: -200px; left: -150px;
+  }
+
+  .hero-content {
+    max-width: 800px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .logo-hero {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 72px; height: 72px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    border-radius: 18px;
+    margin-bottom: 24px;
+    box-shadow: 0 8px 24px rgba(79, 127, 194, 0.35);
+  }
+  .logo-hero svg { width: 38px; height: 38px; fill: none; stroke: white; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+  h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: var(--text-dark);
+    margin-bottom: 20px;
+    line-height: 1.1;
+  }
+
+  h1 .highlight { color: var(--primary); }
+
+  .hero-subtitle {
+    font-size: 1.4rem;
+    color: var(--text-mid);
+    margin-bottom: 48px;
+    font-weight: 500;
+  }
+
+  .cta-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: linear-gradient(135deg, var(--primary) 0%, #3d6db5 100%);
+    color: white;
+    border: none;
+    padding: 20px 48px;
+    border-radius: 16px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(79,127,194,0.4);
+    transition: all 0.3s ease;
+    text-decoration: none;
+  }
+
+  .cta-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(79,127,194,0.5);
+  }
+
+  .cta-primary svg {
+    width: 20px; height: 20px;
+    stroke: white; stroke-width: 2.5;
+    fill: none; stroke-linecap: round; stroke-linejoin: round;
+  }
+
+  /* Problem Section */
+  .section {
+    padding: 100px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 80px;
+  }
+
+  .section-label {
+    display: inline-block;
+    background: var(--lighter);
+    color: var(--primary);
+    padding: 8px 20px;
+    border-radius: 100px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 20px;
+  }
+
+  h2 {
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 16px;
+    letter-spacing: -0.03em;
+  }
+
+  .section-description {
+    font-size: 1.2rem;
+    color: var(--text-mid);
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  /* Stats Grid */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 32px;
+    margin-top: 60px;
+  }
+
+  .stat-card {
+    background: white;
+    padding: 40px 32px;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    text-align: center;
+    transition: transform 0.3s ease;
+  }
+
+  .stat-card:hover {
+    transform: translateY(-4px);
+  }
+
+  .stat-number {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 12px;
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 1.05rem;
+    color: var(--text-mid);
+    font-weight: 500;
+  }
+
+  /* Interactive Demo */
+  .demo-container {
+    background: white;
+    border-radius: 24px;
+    padding: 60px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+    margin-top: 60px;
+  }
+
+  .demo-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+  }
+
+  .demo-step {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 48px;
+    align-items: center;
+  }
+
+  .demo-step:nth-child(even) {
+    grid-template-columns: 1.2fr 1fr;
+  }
+
+  .demo-step:nth-child(even) .step-content {
+    order: 2;
+  }
+
+  .demo-step:nth-child(even) .step-visual {
+    order: 1;
+  }
+
+  .step-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    border-radius: 12px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+
+  .step-content h3 {
+    font-size: 1.8rem;
+    color: var(--text-dark);
+    margin-bottom: 16px;
+    font-weight: 700;
+  }
+
+  .step-content p {
+    font-size: 1.05rem;
+    color: var(--text-mid);
+    line-height: 1.7;
+  }
+
+  .step-visual {
+    background: linear-gradient(135deg, #f8fafc 0%, var(--lighter) 100%);
+    border-radius: 16px;
+    padding: 32px;
+    border: 2px solid #e5eef8;
+    position: relative;
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  /* Survey Preview */
+  .survey-preview {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+
+  .survey-question {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 20px;
+  }
+
+  .survey-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .survey-option {
+    padding: 16px 20px;
+    background: #f8fafc;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.95rem;
+    color: var(--text-mid);
+  }
+
+  .survey-option:hover {
+    background: var(--lighter);
+    border-color: var(--light);
+  }
+
+  .survey-option.selected {
+    background: #e8f2ff;
+    border-color: var(--primary);
+    color: var(--primary);
+    font-weight: 600;
+  }
+
+  /* Anonymization Visual */
+  .anonymization-demo {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .user-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 1.3rem;
+  }
+
+  .arrow-transform {
+    font-size: 2rem;
+    color: var(--light);
+  }
+
+  .anonymized-box {
+    flex: 1;
+    background: white;
+    border: 2px dashed var(--light);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .shield-icon {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 12px;
+  }
+
+  .shield-icon svg {
+    width: 100%;
+    height: 100%;
+    fill: var(--success);
+  }
+
+  /* Aggregation Visual */
+  .aggregation-demo {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .response-bubble {
+    background: white;
+    padding: 16px;
+    border-radius: 10px;
+    border: 2px solid var(--lighter);
+    font-size: 0.85rem;
+    color: var(--text-mid);
+    text-align: center;
+  }
+
+  .aggregate-result {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    padding: 24px;
+    border-radius: 12px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 8px;
+  }
+
+  /* Insights Dashboard */
+  .dashboard-preview {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+  }
+
+  .insight-card {
+    background: #f8fafc;
+    border-left: 4px solid var(--primary);
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+  }
+
+  .insight-title {
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 8px;
+    font-size: 1.05rem;
+  }
+
+  .insight-text {
+    color: var(--text-mid);
+    font-size: 0.95rem;
+  }
+
+  .progress-bar {
+    height: 8px;
+    background: var(--lighter);
+    border-radius: 100px;
+    overflow: hidden;
+    margin-top: 12px;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    border-radius: 100px;
+    transition: width 1s ease;
+  }
+
+  /* Before/After Comparison */
+  .comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-top: 60px;
+  }
+
+  .comparison-card {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  }
+
+  .comparison-card.before {
+    border-top: 4px solid var(--warning);
+  }
+
+  .comparison-card.after {
+    border-top: 4px solid var(--success);
+  }
+
+  .comparison-label {
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 16px;
+  }
+
+  .comparison-card.before .comparison-label {
+    color: var(--warning);
+  }
+
+  .comparison-card.after .comparison-label {
+    color: var(--success);
+  }
+
+  .comparison-card h3 {
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+    color: var(--text-dark);
+  }
+
+  .comparison-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .comparison-list li {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--lighter);
+    color: var(--text-mid);
+    font-size: 0.95rem;
+  }
+
+  .comparison-list li:last-child {
+    border-bottom: none;
+  }
+
+  .comparison-list li::before {
+    content: "×";
+    color: var(--warning);
+    font-weight: 700;
+    margin-right: 12px;
+    font-size: 1.2rem;
+  }
+
+  .comparison-card.after .comparison-list li::before {
+    content: "✓";
+    color: var(--success);
+  }
+
+  /* CTA Section */
+  .cta-section {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: white;
+    padding: 100px 20px;
+    text-align: center;
+  }
+
+  .cta-section h2 {
+    color: white;
+    margin-bottom: 24px;
+  }
+
+  .cta-section p {
+    font-size: 1.3rem;
+    margin-bottom: 48px;
+    opacity: 0.95;
+  }
+
+  .cta-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: white;
+    color: var(--primary);
+    border: none;
+    padding: 20px 48px;
+    border-radius: 16px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    transition: all 0.3s ease;
+    text-decoration: none;
+  }
+
+  .cta-secondary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    h1 { font-size: 2.5rem; }
+    h2 { font-size: 2rem; }
+    .hero { min-height: 80vh; padding: 60px 20px; }
+    .section { padding: 60px 20px; }
+    .demo-container { padding: 32px 24px; }
+    .demo-step {
+      grid-template-columns: 1fr !important;
+    }
+    .demo-step:nth-child(even) .step-content,
+    .demo-step:nth-child(even) .step-visual {
+      order: unset !important;
+    }
+    .comparison {
+      grid-template-columns: 1fr;
+    }
+    .anonymization-demo {
+      flex-direction: column;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- Hero Section -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="logo-hero">
+      <svg viewBox="0 0 24 24"><polyline points="2 12 6 12 8 5 10 19 12 8 14 15 16 12 22 12"/></svg>
+    </div>
+    <h1>The <span class="highlight">Trust Shield</span><br>for AI at Work</h1>
+    <p class="hero-subtitle">Make psychological safety measurable, not just aspirational</p>
+    <a href="#demo" class="cta-primary">
+      See How It Works
+      <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="5 12 12 19 19 12"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- Problem Section -->
+<section class="section" style="background: white;">
+  <div class="section-header">
+    <span class="section-label">The Problem</span>
+    <h2>Fear Is Killing Innovation</h2>
+    <p class="section-description">When employees are afraid to speak up about AI failures, entire organizations suffer in silence</p>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-number">74%</div>
+      <div class="stat-label">Hold back feedback if it could be traced back to them</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">66%</div>
+      <div class="stat-label">Productivity boost when AI works — but 19% drop when it fails</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">60%+</div>
+      <div class="stat-label">Young workers use AI daily but fear admitting it</div>
+    </div>
+  </div>
+</section>
+
+<!-- Solution Section -->
+<section class="section" id="demo">
+  <div class="section-header">
+    <span class="section-label">The Solution</span>
+    <h2>Trust Shield: Anonymous, Actionable AI Feedback</h2>
+    <p class="section-description">A 2-minute check-in that transforms silence into insight — without surveillance</p>
+  </div>
+
+  <div class="demo-container">
+    <div class="demo-steps">
+      
+      <!-- Step 1: Quick Check-in -->
+      <div class="demo-step">
+        <div class="step-content">
+          <div class="step-number">1</div>
+          <h3>Quick 2-Minute Check-In</h3>
+          <p>Employees answer 8 simple questions about their AI experience at work. No names, no tracking, no judgment — just honest feedback about what's working and what's not.</p>
+        </div>
+        <div class="step-visual">
+          <div class="survey-preview">
+            <div class="survey-question">How often does AI hallucinate or provide incorrect information in your work?</div>
+            <div class="survey-options">
+              <div class="survey-option">Never — it's reliable</div>
+              <div class="survey-option selected">Sometimes — I have to double-check</div>
+              <div class="survey-option">Frequently — it's a problem</div>
+              <div class="survey-option">Constantly — I've stopped using it</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2: Anonymization -->
+      <div class="demo-step">
+        <div class="step-content">
+          <div class="step-number">2</div>
+          <h3>Complete Anonymization</h3>
+          <p>Every response is immediately anonymized. No IP tracking, no identifiable metadata, no way to trace feedback back to individuals. As Shoshana Zuboff notes: "When people believe they are being watched, they stop behaving honestly."</p>
+        </div>
+        <div class="step-visual">
+          <div class="anonymization-demo">
+            <div class="user-avatar">JD</div>
+            <div class="arrow-transform">→</div>
+            <div class="anonymized-box">
+              <div class="shield-icon">
+                <svg viewBox="0 0 24 24"><path d="M12 2L3 7v6c0 5.5 3.8 10.7 9 12 5.2-1.3 9-6.5 9-12V7l-9-5z"/></svg>
+              </div>
+              <strong>Encrypted Response</strong>
+              <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 8px;">Identity removed • No tracking • Full privacy</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: Aggregation -->
+      <div class="demo-step">
+        <div class="step-content">
+          <div class="step-number">3</div>
+          <h3>Aggregate Analysis</h3>
+          <p>Individual responses are grouped into patterns and trends. Only collective insights are reported — never individual answers. This protects privacy while revealing the bigger picture.</p>
+        </div>
+        <div class="step-visual">
+          <div class="aggregation-demo">
+            <div class="response-bubble">"AI hallucinations daily"</div>
+            <div class="response-bubble">"I double-check everything"</div>
+            <div class="response-bubble">"Can't trust the outputs"</div>
+            <div class="response-bubble">"Slows me down"</div>
+            <div class="response-bubble">"Errors in reports"</div>
+            <div class="response-bubble">"Need better tools"</div>
+            <div class="aggregate-result">
+              📊 67% report AI accuracy concerns<br>
+              🎯 Primary issue: hallucinations in technical tasks
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4: Actionable Insights -->
+      <div class="demo-step">
+        <div class="step-content">
+          <div class="step-number">4</div>
+          <h3>Actionable Insights for Leadership</h3>
+          <p>Leadership receives clear, data-driven insights about where AI is helping and where it's failing. No finger-pointing, just facts that drive better decisions about tools, training, and support.</p>
+        </div>
+        <div class="step-visual">
+          <div class="dashboard-preview">
+            <div class="insight-card">
+              <div class="insight-title">⚠️ High-Priority Issue Detected</div>
+              <div class="insight-text">67% of engineering team reports AI hallucinations impacting code quality. Consider providing fact-checking frameworks or alternative tools.</div>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: 67%;"></div>
+              </div>
+            </div>
+            <div class="insight-card">
+              <div class="insight-title">✅ Working Well</div>
+              <div class="insight-text">89% of content team finds AI helpful for brainstorming and first drafts. No intervention needed.</div>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: 89%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Before/After Section -->
+<section class="section" style="background: #f8fafc;">
+  <div class="section-header">
+    <span class="section-label">The Impact</span>
+    <h2>From Fear to Safety</h2>
+    <p class="section-description">Organizations using Trust Shield principles see feedback quality increase by over 30%</p>
+  </div>
+
+  <div class="comparison">
+    <div class="comparison-card before">
+      <div class="comparison-label">Without Trust Shield</div>
+      <h3>Silent Suffering</h3>
+      <ul class="comparison-list">
+        <li>Employees hide AI errors to avoid judgment</li>
+        <li>Shadow AI use spreads unchecked</li>
+        <li>Leadership makes decisions on incomplete data</li>
+        <li>Innovation stalls due to fear</li>
+        <li>Talent leaves for psychologically safer environments</li>
+      </ul>
+    </div>
+
+    <div class="comparison-card after">
+      <div class="comparison-label">With Trust Shield</div>
+      <h3>Honest Feedback</h3>
+      <ul class="comparison-list">
+        <li>Employees speak candidly without risk</li>
+        <li>Real issues surface before they escalate</li>
+        <li>Data-driven decisions improve AI adoption</li>
+        <li>Psychological safety enables experimentation</li>
+        <li>Retention improves 6x in safe environments</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- Psychological Safety Section -->
+<section class="section">
+  <div class="section-header">
+    <span class="section-label">The Science</span>
+    <h2>Why Psychological Safety Matters</h2>
+    <p class="section-description">Harvard's Amy Edmondson defines psychological safety as "the shared belief that you won't be punished or humiliated for taking a risk"</p>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-number">6×</div>
+      <div class="stat-label">Higher talent retention in psychologically safe workplaces</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">30%+</div>
+      <div class="stat-label">Increase in feedback quality with anonymized surveys</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">100%</div>
+      <div class="stat-label">Of innovation dies without candid communication</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+  <h2>Ready to Build Trust?</h2>
+  <p>Start measuring psychological safety today — turn silence into insight</p>
+  <a href="#" class="cta-secondary" onclick="alert('Demo survey launching...'); return false;">Try the Demo Survey</a>
+</section>
+
+<script>
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  // Survey option interactivity
+  document.querySelectorAll('.survey-option').forEach(option => {
+    option.addEventListener('click', function() {
+      this.parentElement.querySelectorAll('.survey-option').forEach(opt => {
+        opt.classList.remove('selected');
+      });
+      this.classList.add('selected');
+    });
+  });
+
+  // Progress bar animation on scroll
+  const progressBars = document.querySelectorAll('.progress-fill');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.width = entry.target.style.width;
+      }
+    });
+  }, { threshold: 0.5 });
+
+  progressBars.forEach(bar => observer.observe(bar));
+</script>
+
+</body>
+</html>
