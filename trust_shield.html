@@ -25,6 +25,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 20px;
     color: var(--text-dark);
     position: relative;
     overflow: hidden;
@@ -50,8 +51,8 @@
 
   .container {
     background: var(--white);
-    width: 95%;
-    max-width: 540px;
+    width: 100%;
+    max-width: 620px;
     padding: 64px 52px 56px;
     border-radius: 24px;
     box-shadow: 0 1px 0 rgba(255,255,255,0.8) inset, 0 12px 40px rgba(79,127,194,0.1), 0 2px 8px rgba(0,0,0,0.04);
@@ -83,7 +84,38 @@
 
   .description {
     font-size: 1.05rem; color: var(--text-mid); line-height: 1.65;
-    margin-bottom: 40px; max-width: 340px; margin-left: auto; margin-right: auto;
+    margin-bottom: 32px; max-width: 440px; margin-left: auto; margin-right: auto;
+  }
+
+  .philosophy-box {
+    background: linear-gradient(135deg, #f8fafc 0%, #f0f5fb 100%);
+    border: 1px solid #dde8f5;
+    border-radius: 16px;
+    padding: 24px 28px;
+    margin-bottom: 40px;
+    position: relative;
+  }
+
+  .philosophy-box::before {
+    content: '"';
+    position: absolute;
+    top: 12px;
+    left: 20px;
+    font-size: 3.5rem;
+    line-height: 1;
+    color: var(--light);
+    font-family: Georgia, serif;
+    opacity: 0.4;
+  }
+
+  .philosophy-text {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--text-dark);
+    font-style: italic;
+    text-align: left;
+    position: relative;
+    padding-left: 32px;
   }
 
   .stats-row { display: flex; justify-content: center; gap: 8px; margin-bottom: 36px; flex-wrap: wrap; }
@@ -116,6 +148,14 @@
   .trust-item { display: flex; align-items: center; gap: 5px; font-size: 0.78rem; color: var(--text-muted); font-weight: 500; }
   .trust-item svg { width: 13px; height: 13px; stroke: var(--light); stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
   .trust-sep { width: 3px; height: 3px; background: var(--lighter); border-radius: 50%; }
+
+  @media (max-width: 500px) {
+    .container { padding: 48px 32px 40px; }
+    h1 { font-size: 1.75rem; }
+    .description { font-size: 0.98rem; }
+    .philosophy-text { font-size: 0.88rem; padding-left: 28px; }
+    .philosophy-box { padding: 20px 24px; }
+  }
 </style>
 </head>
 <body>
@@ -126,6 +166,20 @@
   <span class="wordmark">Lyra</span>
   <h1>How's work <span>actually</span> going?</h1>
   <p class="description">A quick 2-minute check-in — so your team can surface what matters, without the noise.</p>
+  
+  <div class="philosophy-box">
+    <p class="philosophy-text">
+      Adopting AI at work is like learning to ride a powerful animal — the direction it takes you matters enormously. Your candid input ensures the ride benefits you, not just the bottom line.
+    </p>
+    <!--
+    SWAP OUT MESSAGE DEPENDING ON DESIRED TONE:
+    
+    FORMAL - Adopting AI at work is like learning to ride a powerful animal — the direction it takes you matters enormously. Your candid input ensures the ride benefits you, not just the bottom line.
+    FRIENDLY - Using AI at work is like riding a lion - exciting at first, but it matters who steers. Tell us what's really going on, and we'll make sure technology works for you - not the other way around.
+    RADICALLY HONEST - AI at work is like riding a lion. You didn't ask to get on, and nobody told you how to steer. Tell us where it's going wrong - that's how we take back control.
+    -->
+  </div>
+
   <div class="stats-row">
     <div class="stat-pill"><div class="dot"></div> 2 minutes</div>
     <div class="stat-pill"><div class="dot"></div> 8 questions</div>
